@@ -82,4 +82,23 @@ public class AdminService {
                 user.getPhone()
         );
     }
+
+    public List<DrugListDto> getDrugs() {
+        List<Drug> drugs = drugRepo.findAll();
+        return toDtoListDrug(drugs);
+    }
+
+    private List<DrugListDto> toDtoListDrug(List<Drug> drugs) {
+        return drugs.stream()
+                .map(this::toDtoDrug)
+                .toList();
+    }
+
+    private DrugListDto toDtoDrug(Drug drug) {
+        return new DrugListDto(
+                drug.getName(),
+                drug.getDescription(),
+                drug.getPhotoURL()
+        );
+    }
 }

@@ -18,6 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminContoller {
     private final AdminService adminService;
+    @GetMapping("/drug_list")
+    public ResponseEntity<List<DrugListDto>> getDrugs(){
+        return ResponseEntity.ok(adminService.getDrugs());
+    }
     @GetMapping("/user_list")
     public ResponseEntity<List<UsersListDto>> getUsersStatusUser() {
         return ResponseEntity.ok(adminService.getUsersByRole(Authorities.USER));
