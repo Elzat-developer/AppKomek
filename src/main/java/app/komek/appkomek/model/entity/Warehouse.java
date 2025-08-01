@@ -14,6 +14,8 @@ public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "drug_name")
+    private String drugName;
     private int count;
     @Column(name = "reserve_count")
     private int reserveCount;

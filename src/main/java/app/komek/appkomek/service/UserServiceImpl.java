@@ -34,13 +34,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createOrder(OrderDtos orderDtos) {
         Order order = new Order();
-        order.setUserFullName(order.getUserFullName());
-        order.setPharmacyName(order.getPharmacyName());
-        order.setPharmacyAddress(order.getPharmacyAddress());
-        order.setDrugName(order.getDrugName());
+        order.setDrugName(orderDtos.drugName());
         order.setCount(orderDtos.count());
         order.setCreateOrder(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.CREATE);
+
+        Pharmacy pharmacy = pharmacyRepo.findByPharmacyName(orderDtos.pharmacyName())
+                .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+        order.setPharmacy(pharmacy);
+
+        User user = userRepo.findById(orderDtos.userId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        order.setUser(user);
+
         orderRepo.save(order);
     }
 
@@ -88,7 +94,7 @@ public class UserServiceImpl implements UserService {
     private PharmacyDto toDtoPharmacy(Pharmacy pharmacy) {
         return new PharmacyDto(
                 pharmacy.getPharmacyName(),
-                pharmacy.getAddress(),
+                pharmacy.getPharmacyAddress(),
                 pharmacy.getPhone(),
                 pharmacy.getDescription(),
                 pharmacy.getLocation(),
@@ -104,11 +110,14 @@ public class UserServiceImpl implements UserService {
 
     private OrderDtos toDto(Order order) {
         return new OrderDtos(
-                order.getUserFullName(),
-                order.getPharmacyName(),
-                order.getPharmacyAddress(),
+                order.getPharmacy().getPharmacyName(),
+                order.getPharmacy().getPharmacyAddress(),
                 order.getDrugName(),
-                order.getCount()
+                order.getCount(),
+                order.getUser().getId(),
+                order.getUser().getName(),
+                order.getUser().getSurName(),
+                order.getUser().getLastName()
         );
     }
 

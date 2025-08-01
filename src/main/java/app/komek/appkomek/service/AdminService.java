@@ -24,7 +24,7 @@ public class AdminService {
     public void createPharmacy(CreatePharmacy createPharmacy) {
         Pharmacy pharmacy = new Pharmacy();
         pharmacy.setPharmacyName(createPharmacy.pharmacyName());
-        pharmacy.setAddress(createPharmacy.pharmacyAddress());
+        pharmacy.setPharmacyAddress(createPharmacy.pharmacyAddress());
         pharmacy.setLocation(createPharmacy.pharmacyLocation());
         pharmacy.setPhone(createPharmacy.pharmacyPhone());
         pharmacy.setDescription(createPharmacy.pharmacyDescription());

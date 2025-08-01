@@ -14,12 +14,6 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "user_full_name")
-    private String userFullName;
-    @Column(name = "pharmacy_name")
-    private String pharmacyName;
-    @Column(name = "pharmacy_address")
-    private String pharmacyAddress;
     @Column(name = "drug_name")
     private String drugName;
     private int count;
@@ -33,4 +27,10 @@ public class Order {
     @JoinTable(name = "drugs_orders", joinColumns = @JoinColumn(name = "orders_id"),
             inverseJoinColumns = @JoinColumn(name = "drugs_id"))
     private List<Drug> drugs;
+    @ManyToOne
+    @JoinColumn(name = "pharmacy_id",referencedColumnName = "id")
+    private Pharmacy pharmacy;
+    @ManyToOne
+    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    private User user;
 }

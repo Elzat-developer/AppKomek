@@ -4,7 +4,10 @@ import app.komek.appkomek.model.entity.Pharmacy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PharmacyRepo extends JpaRepository<Pharmacy,Integer> {
     Pharmacy findById(int pharmacyId);
+    Optional<Pharmacy> findByPharmacyName(String pharmacyName);
 }
