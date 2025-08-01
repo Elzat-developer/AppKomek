@@ -16,7 +16,7 @@ public interface UserService {
 
     List<PharmacyDto> getPharmacies();
 
-    PharmacyDto getPharmacy(Integer pharmacyID);
+    PharmacyDto getPharmacy(int pharmacyID);
 
     ProfileDto getProfile(int id);
 }

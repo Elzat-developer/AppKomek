@@ -57,14 +57,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PharmacyDto getPharmacy(Integer pharmacyID) {
-        Pharmacy pharmacy = pharmacyRepo.findByPharmacyId(pharmacyID);
+    public PharmacyDto getPharmacy(int pharmacyID) {
+        Pharmacy pharmacy = pharmacyRepo.findById(pharmacyID);
         return toDtoPharmacy(pharmacy);
     }
 
     @Override
-    public ProfileDto getProfile(int userID) {
-        User user = userRepo.findByUserID(userID);
+    public ProfileDto getProfile(int user_id) {
+        User user = userRepo.findById(user_id);
         return toDtoUser(user);
     }
 

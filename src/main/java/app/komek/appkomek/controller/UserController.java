@@ -30,7 +30,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getPharmacies());
     }
     @GetMapping("/pharmacies/{pharmacyID}")
-    public ResponseEntity<PharmacyDto> getPharmacy(@PathVariable Integer pharmacyID){
+    public ResponseEntity<PharmacyDto> getPharmacy(@PathVariable int pharmacyID){
         return ResponseEntity.ok(userService.getPharmacy(pharmacyID));
     }
     @PostMapping("/create_order")
