@@ -20,6 +20,9 @@ public class Order {
     private String pharmacyName;
     @Column(name = "pharmacy_address")
     private String pharmacyAddress;
+    @Column(name = "drug_name")
+    private String drugName;
+    private int count;
     @Column(name = "create_order")
     private LocalDateTime createOrder;
     @Enumerated(value = EnumType.STRING)

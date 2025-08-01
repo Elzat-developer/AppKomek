@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PharmacyRepo extends JpaRepository<Pharmacy,Integer> {
+    Pharmacy findByPharmacyId(Integer pharmacyId);
 }
