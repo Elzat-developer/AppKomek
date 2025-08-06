@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
         order.setCount(orderDtos.count());
         order.setCreateOrder(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.CREATE);
-
+        order.setQrCode(generateQrCode(order.getId()));
         Pharmacy pharmacy = pharmacyRepo.findByPharmacyName(orderDtos.pharmacyName())
                 .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
         order.setPharmacy(pharmacy);
@@ -48,6 +49,10 @@ public class UserServiceImpl implements UserService {
         order.setUser(user);
 
         orderRepo.save(order);
+    }
+
+    private String generateQrCode(int orderId) {
+        return "ORDER-" + orderId + "-" + UUID.randomUUID();
     }
 
     @Override
@@ -117,7 +122,8 @@ public class UserServiceImpl implements UserService {
                 order.getUser().getId(),
                 order.getUser().getName(),
                 order.getUser().getSurName(),
-                order.getUser().getLastName()
+                order.getUser().getLastName(),
+                order.getCreateOrder()
         );
     }
 

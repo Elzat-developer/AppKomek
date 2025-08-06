@@ -2,7 +2,7 @@ package app.komek.appkomek.model.dto;
 
 public record PharmacyDto(
          String pharmacyName,
-         String address,
+         String pharmacyAddress,
          String phone,
          String description,
          String location,

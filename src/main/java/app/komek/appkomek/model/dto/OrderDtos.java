@@ -1,5 +1,7 @@
 package app.komek.appkomek.model.dto;
 
+import java.time.LocalDateTime;
+
 public record OrderDtos(
         String pharmacyName,
         String pharmacyAddress,
@@ -8,6 +10,7 @@ public record OrderDtos(
         Integer userId,
         String userName,
         String userSurName,
-        String userLastName
+        String userLastName,
+        LocalDateTime createData
 ) {
 }

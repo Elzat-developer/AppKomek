@@ -24,4 +24,23 @@ public class PharmacyController {
     public ResponseEntity<List<OrderDtos>> getOrdersByPharmacy(@PathVariable Integer pharmacyId) {
         return ResponseEntity.ok(pharmacyService.getOrdersByPharmacy(pharmacyId));
     }
+    @PostMapping("/{orderId}/order_fulfillment")
+    public ResponseEntity<String> orderFulfillment(
+            @PathVariable Integer orderId,
+            @RequestParam Integer pharmacyId,
+            @RequestParam Integer deliveryId
+            ){
+        pharmacyService.orderFulfillment(orderId,pharmacyId,deliveryId);
+        return new ResponseEntity<>("Order fulfillment sent!", HttpStatus.ACCEPTED);
+    }
+    @PostMapping("/{orderId}/reserve_drug_warehouse")
+    public ResponseEntity<String> addDrugWarehouseOrder(@PathVariable Integer orderId) {
+        pharmacyService.addDrugWarehouseOrder(orderId);
+        return new ResponseEntity<>("Drug add warehouse!",HttpStatus.ACCEPTED);
+    }
+    @PostMapping("/{orderId}/give_out_drug")
+    public ResponseEntity<String> giveOutDrug(@PathVariable Integer orderId){
+        pharmacyService.giveOutDrug(orderId);
+        return new ResponseEntity<>("The order has been completed.",HttpStatus.ACCEPTED);
+    }
 }
