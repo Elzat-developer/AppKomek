@@ -26,4 +26,6 @@ public class Pharmacy {
     private Warehouse warehouse;
     @OneToMany(mappedBy = "pharmacy",cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "pharmacy",cascade = CascadeType.ALL)
+    private List<User> users = new ArrayList<>();
 }

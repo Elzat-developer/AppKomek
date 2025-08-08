@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-public class AdminContoller {
+public class AdminController {
     private final AdminService adminService;
     @GetMapping("/drug_list")
     public ResponseEntity<List<DrugListDto>> getDrugs(){

@@ -39,6 +39,9 @@ public class User implements UserDetails {
     private boolean passwordTemporary;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id")
+    private Pharmacy pharmacy;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
