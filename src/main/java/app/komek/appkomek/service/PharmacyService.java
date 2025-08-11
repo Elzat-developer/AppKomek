@@ -45,7 +45,6 @@ public class PharmacyService {
                 order.getPharmacy().getPharmacyAddress(),
                 order.getDrugName(),
                 order.getCount(),
-                order.getUser().getId(),
                 order.getUser().getName(),
                 order.getUser().getSurName(),
                 order.getUser().getLastName(),

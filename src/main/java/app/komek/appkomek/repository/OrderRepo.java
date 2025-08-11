@@ -15,4 +15,6 @@ public interface OrderRepo extends JpaRepository<Order,Integer> {
 
     List<Order> findByOrderStatus(OrderStatus orderStatus);
     Optional<Order> findByQrCode(String qrCode);
+
+    List<Order> findByUserId(Integer userId);
 }

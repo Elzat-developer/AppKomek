@@ -21,17 +21,6 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepo userRepo;
     private final DrugRepo drugRepo;
-    public void createPharmacy(CreatePharmacy createPharmacy) {
-        Pharmacy pharmacy = new Pharmacy();
-        pharmacy.setPharmacyName(createPharmacy.pharmacyName());
-        pharmacy.setPharmacyAddress(createPharmacy.pharmacyAddress());
-        pharmacy.setLocation(createPharmacy.pharmacyLocation());
-        pharmacy.setPhone(createPharmacy.pharmacyPhone());
-        pharmacy.setDescription(createPharmacy.pharmacyDescription());
-        pharmacy.setPhotoURL(createPharmacy.pharmacyPhotoUrl());
-        pharmacyRepo.save(pharmacy);
-    }
-
     public void createAccountPharmacy(CreateAccountPharmacy createAccountPharmacy) {
         User user = new User();
         user.setName(createAccountPharmacy.firstName());
@@ -43,6 +32,22 @@ public class AdminService {
         user.setAuthorities(Authorities.PHARMACY);
         user.setPhone(createAccountPharmacy.phone());
         user.setPhotoURL(createAccountPharmacy.photoUrl());
+
+        Pharmacy pharmacy = pharmacyRepo.findByPharmacyName(createAccountPharmacy.pharmacyName())
+                .orElseGet(() -> {
+                    Pharmacy p = new Pharmacy();
+                    p.setPharmacyName(createAccountPharmacy.pharmacyName());
+                    p.setPharmacyAddress(createAccountPharmacy.pharmacyAddress());
+                    p.setLocation(createAccountPharmacy.pharmacyLocation());
+                    p.setPhone(createAccountPharmacy.pharmacyPhone());
+                    p.setDescription(createAccountPharmacy.pharmacyDescription());
+                    p.setPhotoURL(createAccountPharmacy.pharmacyPhotoUrl());
+                    return pharmacyRepo.save(p);
+                });
+
+        // Связываем аптеку с пользователем
+        user.setPharmacy(pharmacy);
+
         userRepo.save(user);
     }
 
@@ -55,17 +60,17 @@ public class AdminService {
     }
 
     public void createDelivery(CreateDelivery createDelivery) {
-        User user = new User();
-        user.setName(createDelivery.firstName());
-        user.setSurName(createDelivery.surName());
-        user.setLastName(createDelivery.lastName());
-        user.setEmail(createDelivery.email());
-        user.setPassword(passwordEncoder.encode(createDelivery.password()));
-        user.setPasswordTemporary(true);
-        user.setAuthorities(Authorities.DELIVERY);
-        user.setPhone(createDelivery.phone());
-        user.setPhotoURL(createDelivery.photoUrl());
-        userRepo.save(user);
+        User delivery = new User();
+        delivery.setName(createDelivery.firstName());
+        delivery.setSurName(createDelivery.surName());
+        delivery.setLastName(createDelivery.lastName());
+        delivery.setEmail(createDelivery.email());
+        delivery.setPassword(passwordEncoder.encode(createDelivery.password()));
+        delivery.setPasswordTemporary(true);
+        delivery.setAuthorities(Authorities.DELIVERY);
+        delivery.setPhone(createDelivery.phone());
+        delivery.setPhotoURL(createDelivery.photoUrl());
+        userRepo.save(delivery);
     }
 
     public List<UsersListDto> getUsersByRole(Authorities role) {
@@ -99,6 +104,23 @@ public class AdminService {
                 drug.getName(),
                 drug.getDescription(),
                 drug.getPhotoURL()
+        );
+    }
+
+    public List<PharmacyDto> getPharmacyList() {
+        List<Pharmacy> pharmacies = pharmacyRepo.findAll();
+        return pharmacies.stream().map(this::toDtoPharmacy)
+                .toList();
+    }
+
+    private PharmacyDto toDtoPharmacy(Pharmacy pharmacy) {
+        return new PharmacyDto(
+                pharmacy.getPharmacyName(),
+                pharmacy.getPharmacyAddress(),
+                pharmacy.getPhone(),
+                pharmacy.getDescription(),
+                pharmacy.getLocation(),
+                pharmacy.getPhotoURL()
         );
     }
 }

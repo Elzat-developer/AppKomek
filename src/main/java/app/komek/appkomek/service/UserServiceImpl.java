@@ -1,5 +1,6 @@
 package app.komek.appkomek.service;
 
+import app.komek.appkomek.model.dto.CreateOrderDto;
 import app.komek.appkomek.model.dto.OrderDtos;
 import app.komek.appkomek.model.dto.PharmacyDto;
 import app.komek.appkomek.model.dto.ProfileDto;
@@ -31,9 +32,8 @@ public class UserServiceImpl implements UserService {
         return username -> userRepo.findByEmail(username).
                 orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
     @Override
-    public void createOrder(OrderDtos orderDtos) {
+    public void createOrder(int userId, CreateOrderDto orderDtos) {
         Order order = new Order();
         order.setDrugName(orderDtos.drugName());
         order.setCount(orderDtos.count());
@@ -44,8 +44,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
         order.setPharmacy(pharmacy);
 
-        User user = userRepo.findById(orderDtos.userId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepo.findById(userId);
         order.setUser(user);
 
         orderRepo.save(order);
@@ -56,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OrderDtos> getOrders() {
-        List<Order> orders = orderRepo.findAll();
+    public List<OrderDtos> getOrders(int userId) {
+        List<Order> orders = orderRepo.findByUserId(userId);
         return toDtoListOrders(orders);
     }
 
@@ -119,7 +118,6 @@ public class UserServiceImpl implements UserService {
                 order.getPharmacy().getPharmacyAddress(),
                 order.getDrugName(),
                 order.getCount(),
-                order.getUser().getId(),
                 order.getUser().getName(),
                 order.getUser().getSurName(),
                 order.getUser().getLastName(),

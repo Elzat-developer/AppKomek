@@ -7,7 +7,6 @@ public record OrderDtos(
         String pharmacyAddress,
         String drugName,
         Integer count,
-        Integer userId,
         String userName,
         String userSurName,
         String userLastName,

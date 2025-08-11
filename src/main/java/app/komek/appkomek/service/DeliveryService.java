@@ -5,6 +5,7 @@ import app.komek.appkomek.model.dto.OrderListDto;
 import app.komek.appkomek.model.entity.Order;
 import app.komek.appkomek.model.status.OrderStatus;
 import app.komek.appkomek.repository.OrderRepo;
+import app.komek.appkomek.repository.PharmacyRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class DeliveryService {
     private final OrderRepo orderRepo;
     private final MailSenderService mailSenderService;
+    private final PharmacyRepo pharmacyRepo;
 
     public List<OrderListDto> getOrders(String orderStatus) {
         List<Order> orderList = orderRepo.findByOrderStatus(OrderStatus.valueOf(orderStatus));
@@ -42,7 +44,6 @@ public class DeliveryService {
                 order.getPharmacy().getPharmacyAddress(),
                 order.getDrugName(),
                 order.getCount(),
-                order.getUser().getId(),
                 order.getUser().getName(),
                 order.getUser().getSurName(),
                 order.getUser().getLastName(),
@@ -57,18 +58,27 @@ public class DeliveryService {
         order.setOrderStatus(OrderStatus.READY);
         orderRepo.save(order);
 
-        // Отправить уведомление аптеке (через email, Telegram или WebSocket)
         String message = String.format(
-                "Пожалуйста примите заказ от пользователья %s" +
-                        "Лекарство %s количество %d",
+                "Пожалуйста, примите заказ от пользователя %s. " +
+                        "Лекарство: %s, количество: %d",
                 order.getUser().getName(),
                 order.getDrugName(),
                 order.getCount()
         );
+
+        // Получаем email аптеки
+        List<String> emails = pharmacyRepo.findEmailsByPharmacyId(order.getPharmacy().getId());
+
+        if (emails.isEmpty()) {
+            throw new RuntimeException("Pharmacy has no registered email to send notification");
+        }
+
+        // Отправляем на первый найденный email
         mailSenderService.send(
-            order.getPharmacy().getUsers().getFirst().getEmail(),
-                "Пришел заказ от пользователья",
+                emails.get(0),
+                "Пришел заказ от пользователя",
                 message
         );
     }
+
 }

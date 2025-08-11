@@ -7,6 +7,12 @@ public record CreateAccountPharmacy(
     String email,
     String password,
     String phone,
-    String photoUrl
+    String photoUrl,
+    String pharmacyName,
+    String pharmacyAddress,
+    String pharmacyLocation,
+    String pharmacyPhone,
+    String pharmacyDescription,
+    String pharmacyPhotoUrl
 ) {
 }

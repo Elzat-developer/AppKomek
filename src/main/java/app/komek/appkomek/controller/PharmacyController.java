@@ -15,14 +15,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PharmacyController {
     private final PharmacyService pharmacyService;
-    @PostMapping("/add_drug_warehouse")
-    public ResponseEntity<String> addDrugWarehouse(WarehouseDto warehouseDto){
-        pharmacyService.addDrugWarehouse(warehouseDto);
-        return new ResponseEntity<>("Drug add Warehouse successfully!", HttpStatus.CREATED);
-    }
-    @GetMapping("/pharmacies/{pharmacyId}/orders")
+    @GetMapping("/{pharmacyId}/orders")
     public ResponseEntity<List<OrderDtos>> getOrdersByPharmacy(@PathVariable Integer pharmacyId) {
         return ResponseEntity.ok(pharmacyService.getOrdersByPharmacy(pharmacyId));
+    }
+    @PostMapping("/add_drug_warehouse")
+    public ResponseEntity<String> addDrugWarehouse(@RequestBody WarehouseDto warehouseDto){
+        pharmacyService.addDrugWarehouse(warehouseDto);
+        return new ResponseEntity<>("Drug add Warehouse successfully!", HttpStatus.CREATED);
     }
     @PostMapping("/{orderId}/order_fulfillment")
     public ResponseEntity<String> orderFulfillment(

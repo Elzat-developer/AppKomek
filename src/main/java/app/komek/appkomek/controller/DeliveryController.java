@@ -24,22 +24,42 @@ public class DeliveryController {
         return ResponseEntity.ok(userService.getProfile(user.getId()));
     }
     @GetMapping("/orders/create")
-    public ResponseEntity<List<OrderListDto>> getOrdersCreate(){
-        return new ResponseEntity<>(deliveryService.getOrders("CREATE"), HttpStatus.OK);
+    public ResponseEntity<?> getOrdersCreate(){
+        List<OrderListDto> orders = deliveryService.getOrders("CREATE");
+        if (orders.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Не Найдено!");
+        } else {
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        }
     }
     @GetMapping("/orders/in_progress")
-    public ResponseEntity<List<OrderListDto>> getOrdersIn_progress(){
-        return new ResponseEntity<>(deliveryService.getOrders("IN_PROGRESS"), HttpStatus.OK);
+    public ResponseEntity<?> getOrdersIn_progress(){
+        List<OrderListDto> orders = deliveryService.getOrders("IN_PROGRESS");
+        if (orders.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Не Найдено!");
+        } else {
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        }
     }
     @GetMapping("/orders/ready")
-    public ResponseEntity<List<OrderListDto>> getOrdersReady(){
-        return new ResponseEntity<>(deliveryService.getOrders("READY"), HttpStatus.OK);
+    public ResponseEntity<?> getOrdersReady(){
+        List<OrderListDto> orders = deliveryService.getOrders("READY");
+        if (orders.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Не Найдено!");
+        } else {
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        }
     }
     @GetMapping("/orders/done")
-    public ResponseEntity<List<OrderListDto>> getOrdersDone(){
-        return new ResponseEntity<>(deliveryService.getOrders("DONE"), HttpStatus.OK);
+    public ResponseEntity<?> getOrdersDone(){
+        List<OrderListDto> orders = deliveryService.getOrders("DONE");
+        if (orders.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Не Найдено!");
+        } else {
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        }
     }
-    @GetMapping("/order/{orderId}/")
+    @GetMapping("/order/{orderId}")
     public ResponseEntity<OrderDtos> getOrder(@PathVariable Integer orderId){
         return new ResponseEntity<>(deliveryService.getOrder(orderId),HttpStatus.OK);
     }
