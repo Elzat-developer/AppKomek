@@ -19,6 +19,7 @@ public class Order {
     private int count;
     @Column(name = "create_order")
     private LocalDateTime createOrder;
+    @Column(name = "order_status")
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
     @Column(name = "delete_order")
@@ -35,6 +36,6 @@ public class Order {
     @JoinColumn(name = "pharmacy_id",referencedColumnName = "id")
     private Pharmacy pharmacy;
     @ManyToOne
-    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
