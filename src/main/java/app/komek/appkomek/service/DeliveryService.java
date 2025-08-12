@@ -1,5 +1,6 @@
 package app.komek.appkomek.service;
 
+import app.komek.appkomek.model.dto.EmailMessageDto;
 import app.komek.appkomek.model.dto.OrderDtos;
 import app.komek.appkomek.model.dto.OrderListDto;
 import app.komek.appkomek.model.entity.Order;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeliveryService {
     private final OrderRepo orderRepo;
-    private final MailSenderService mailSenderService;
+    private final EmailKafkaProducer mailSenderService;
     private final PharmacyRepo pharmacyRepo;
 
     public List<OrderListDto> getOrders(String orderStatus) {
@@ -74,11 +75,11 @@ public class DeliveryService {
         }
 
         // Отправляем на первый найденный email
-        mailSenderService.send(
+        mailSenderService.sendEmail(new EmailMessageDto(
                 emails.get(0),
                 "Пришел заказ от пользователя",
                 message
-        );
+        ));
     }
 
 }

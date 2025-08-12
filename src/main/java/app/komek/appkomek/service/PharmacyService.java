@@ -21,7 +21,7 @@ public class PharmacyService {
     private final WarehouseRepo warehouseRepo;
     private final OrderRepo orderRepo;
     private final PharmacyRepo pharmacyRepo;
-    private final MailSenderService mailSenderService;
+    private final EmailKafkaProducer mailSenderService;
     private final UserRepo userRepo;
 
     public void addDrugWarehouse(WarehouseDto warehouseDto) {
@@ -96,11 +96,11 @@ public class PharmacyService {
                 order.getCreateOrder().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
         );
 
-        mailSenderService.send(
+        mailSenderService.sendEmail(new EmailMessageDto(
                 delivery.getEmail(),
                 subject,
                 message
-        );
+        ));
     }
 
     private CreateDrug toDtoDrug(Drug drug) {
@@ -134,12 +134,12 @@ public class PharmacyService {
                 pharmacy.getPharmacyName(), pharmacy.getPharmacyAddress(), pharmacy.getPhone(), pharmacy.getLocation(), pharmacy.getPhotoURL()
         );
 
-        mailSenderService.send(
+        mailSenderService.sendEmail(new EmailMessageDto(
                 order.getUser().getEmail(),
                 "Можете забрать ваш заказ",
                 message
 
-        );
+        ));
     }
 
     public void giveOutDrug(int orderId) {
@@ -153,12 +153,11 @@ public class PharmacyService {
           order.getPharmacy().getPharmacyName()
         );
 
-        mailSenderService.send(
+        mailSenderService.sendEmail(new EmailMessageDto(
                 order.getUser().getEmail(),
                 "Вам выдан ваш заказ",
                 message
-
-        );
+        ));
     }
 
     public ProfileDtoPharmacy getProfile(int user_id) {
