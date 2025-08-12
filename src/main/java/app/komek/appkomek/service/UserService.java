@@ -1,9 +1,6 @@
 package app.komek.appkomek.service;
 
-import app.komek.appkomek.model.dto.CreateOrderDto;
-import app.komek.appkomek.model.dto.OrderDtos;
-import app.komek.appkomek.model.dto.PharmacyDto;
-import app.komek.appkomek.model.dto.ProfileDto;
+import app.komek.appkomek.model.dto.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -20,4 +17,8 @@ public interface UserService {
     PharmacyDto getPharmacy(int pharmacyID);
 
     ProfileDto getProfile(int id);
+
+    void editOrder(Integer orderId, EditOrderDto editOrder);
+
+    void deleteOrder(Integer orderId);
 }

@@ -160,4 +160,22 @@ public class PharmacyService {
 
         );
     }
+
+    public ProfileDtoPharmacy getProfile(int user_id) {
+        User user = userRepo.findById(user_id);
+        return toDtoUser(user);
+    }
+
+    private ProfileDtoPharmacy toDtoUser(User user) {
+        return new ProfileDtoPharmacy(
+                user.getName(),
+                user.getSurName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPhotoURL(),
+                user.getPhone(),
+                user.getPharmacy().getPharmacyName(),
+                user.getAuthorities().toString()
+        );
+    }
 }

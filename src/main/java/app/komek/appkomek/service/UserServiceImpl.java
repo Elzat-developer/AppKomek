@@ -1,9 +1,6 @@
 package app.komek.appkomek.service;
 
-import app.komek.appkomek.model.dto.CreateOrderDto;
-import app.komek.appkomek.model.dto.OrderDtos;
-import app.komek.appkomek.model.dto.PharmacyDto;
-import app.komek.appkomek.model.dto.ProfileDto;
+import app.komek.appkomek.model.dto.*;
 import app.komek.appkomek.model.entity.Order;
 import app.komek.appkomek.model.entity.Pharmacy;
 import app.komek.appkomek.model.entity.User;
@@ -76,6 +73,30 @@ public class UserServiceImpl implements UserService {
     public ProfileDto getProfile(int user_id) {
         User user = userRepo.findById(user_id);
         return toDtoUser(user);
+    }
+
+    @Override
+    public void editOrder(Integer orderId, EditOrderDto editOrder) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (editOrder.drugName() != null) {
+            order.setDrugName(editOrder.drugName());
+        }
+        if (editOrder.count() != null) {
+            order.setCount(editOrder.count());
+        }
+
+        order.setUpdatedAt(LocalDateTime.now());
+
+        orderRepo.save(order);
+    }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        orderRepo.delete(order);
     }
 
     private ProfileDto toDtoUser(User user) {

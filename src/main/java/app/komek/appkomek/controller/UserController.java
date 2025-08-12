@@ -1,9 +1,6 @@
 package app.komek.appkomek.controller;
 
-import app.komek.appkomek.model.dto.CreateOrderDto;
-import app.komek.appkomek.model.dto.OrderDtos;
-import app.komek.appkomek.model.dto.PharmacyDto;
-import app.komek.appkomek.model.dto.ProfileDto;
+import app.komek.appkomek.model.dto.*;
 import app.komek.appkomek.model.entity.User;
 import app.komek.appkomek.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +35,15 @@ public class UserController {
     public ResponseEntity<String> createOrder(@PathVariable Integer userId,@RequestBody CreateOrderDto orderDtos){
         userService.createOrder(userId,orderDtos);
         return new ResponseEntity<>("Order successfully created!", HttpStatus.CREATED);
+    }
+    @PutMapping("/edit_order/{orderId}")
+    public ResponseEntity<String> editOrder(@PathVariable Integer orderId,@RequestBody EditOrderDto editOrder){
+        userService.editOrder(orderId,editOrder);
+        return  new ResponseEntity<>("Order edited",HttpStatus.OK);
+    }
+    @DeleteMapping("/delete_order/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Integer orderId){
+        userService.deleteOrder(orderId);
+        return ResponseEntity.noContent().build();
     }
 }

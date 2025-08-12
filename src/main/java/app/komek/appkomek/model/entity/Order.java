@@ -23,6 +23,8 @@ public class Order {
     private OrderStatus orderStatus;
     @Column(name = "delete_order")
     private LocalDateTime deleteOrder;
+    @Column(name = "updated_at")
+    private LocalDateTime UpdatedAt;
     @Column(name = "qr_code")
     private String qrCode;
     @ManyToMany

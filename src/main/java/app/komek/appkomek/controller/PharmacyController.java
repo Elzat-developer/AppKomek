@@ -1,7 +1,9 @@
 package app.komek.appkomek.controller;
 
 import app.komek.appkomek.model.dto.OrderDtos;
+import app.komek.appkomek.model.dto.ProfileDtoPharmacy;
 import app.komek.appkomek.model.dto.WarehouseDto;
+import app.komek.appkomek.model.entity.User;
 import app.komek.appkomek.service.PharmacyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PharmacyController {
     private final PharmacyService pharmacyService;
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDtoPharmacy> getProfile(@PathVariable User user){
+        return ResponseEntity.ok(pharmacyService.getProfile(user.getId()));
+    }
     @GetMapping("/{pharmacyId}/orders")
     public ResponseEntity<List<OrderDtos>> getOrdersByPharmacy(@PathVariable Integer pharmacyId) {
         return ResponseEntity.ok(pharmacyService.getOrdersByPharmacy(pharmacyId));
